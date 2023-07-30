@@ -6,16 +6,26 @@ using System;
 
 public class NoteSpawner : MonoBehaviour
 {
+    //list to hold all currently spawned notes
     private List<Note> notes;
+
+    //y position of the receiver, used by notes for scoring
     private float yLim = 3.0f;
+
+    //y position of the top, used by notes for despawning missed notes
     private float topOfScreen = 5.0f;
+
     private float speed = 0.1f;
+
+    //prevScore is used to update current score
     private int score = 0;
     private int prevScore = 50;
+    //output the score on the screen 
     [SerializeField] protected TextMeshProUGUI scoreText;
+
+    //used for timing
     private float currentTime = 0.0f;
     private float bps = 2f;
-    private int missCounter = 0;
     
     void Start()
     {
@@ -36,6 +46,8 @@ public class NoteSpawner : MonoBehaviour
         notes.RemoveAt(index);
     }
 
+    //checks user input and whether notes have passed screen, removes them from list
+    //updates score if different from prevScore
     void Update()
     {
         prevScore = score;
@@ -52,7 +64,6 @@ public class NoteSpawner : MonoBehaviour
             if (note.hasPassed())
             {
                 RemoveNote(i);
-                missCounter++;
             }
         }
 
@@ -62,6 +73,7 @@ public class NoteSpawner : MonoBehaviour
         }
     }
 
+    //moves all notes upwards
     private void FixedUpdate()
     {
         for (int i = 0; i < notes.Count; i++)
