@@ -28,7 +28,10 @@ class Note
     private KeyCode key;
 
     //ranges for scoring, based on how far arrow is from yLim, which is the arrow target y value
-    private float goodRange = 1.0f;
+    private float nastyRange = 1.0f;
+    private float goodRange = 0.7f;
+    private float greatRange = 0.3f;
+    private float perfectRange = 0.1f;
     private float yLim;
 
     //spawns note at the bottom of the screen and positions x based on direction
@@ -96,7 +99,7 @@ class Note
     {
         if (Input.GetKeyDown(key))
         {
-            if (newNote.transform.position.y < yLim + goodRange && newNote.transform.position.y > yLim - goodRange)
+            if (checkRange() != 0)
             {
                 hit = true;
                 Object.Destroy(newNote);
@@ -109,4 +112,27 @@ class Note
         }
 
     }
+
+    public int checkRange()
+    {
+        if (newNote.transform.position.y < yLim + perfectRange && newNote.transform.position.y > yLim - perfectRange)
+        {
+            return 5;
+        }
+        if (newNote.transform.position.y < yLim + greatRange && newNote.transform.position.y > yLim - greatRange)
+        {
+            return 4;
+        }
+        if (newNote.transform.position.y < yLim + goodRange && newNote.transform.position.y > yLim - goodRange)
+        {
+            return 2;
+        }
+        if (newNote.transform.position.y < yLim + nastyRange && newNote.transform.position.y > yLim - nastyRange)
+        {
+            return 1;
+        }
+        return 0;
+    }
 }
+
+

@@ -26,12 +26,19 @@ public class NoteSpawner : MonoBehaviour
     //used for timing
     private float currentTime = 0.0f;
     private float bps = 2f;
-    
+
+    //used to access music and beats per minute
+    [SerializeField] protected float bpm;
+    [SerializeField] protected AudioClip music;
+
     void Start()
     {
         notes = new List<Note>();
         
         scoreText.text = score.ToString();
+
+        //load receiver
+
        
     }
 
@@ -58,8 +65,8 @@ public class NoteSpawner : MonoBehaviour
             note.Update();
             if (note.isHit())
             {
+                score += note.checkRange();
                 RemoveNote(i);
-                score++;
             }
             if (note.hasPassed())
             {
@@ -73,7 +80,7 @@ public class NoteSpawner : MonoBehaviour
         }
     }
 
-    //moves all notes upwards
+    //moves all notes upwards, spawns new notes
     private void FixedUpdate()
     {
         for (int i = 0; i < notes.Count; i++)
